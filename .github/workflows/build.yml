@@ -1,0 +1,67 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        target:
+          - '{"goos":"windows","goarch":"386"}'
+          - '{"goos":"windows","goarch":"amd64"}'
+          - '{"goos":"windows","goarch":"arm"}'
+          - '{"goos":"android","goarch":"arm64"}'
+          - '{"goos":"darwin","goarch":"amd64"}'
+          - '{"goos":"linux","goarch":"386"}'
+          - '{"goos":"linux","goarch":"amd64"}'
+          - '{"goos":"linux","goarch":"arm"}'
+          - '{"goos":"linux","goarch":"arm64"}'
+
+    runs-on: ubuntu-latest
+
+    env:
+      CGO_ENABLED: 0
+      GOOS: ${{ fromJson(matrix.target).goos }}
+      GOARCH: ${{ fromJson(matrix.target).goarch }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'
+
+      - name: Go Mod Download
+        run: |
+          go mod download
+        shell: bash
+
+      - name: Build Binary
+        run: |
+          go build -trimpath -ldflags "-w -s"
+        shell: bash
+
+      - name: Copy Binary to Output Folder
+        run: |
+          mkdir out
+          cp kverify out/kverify || true
+          cp kverify.exe out/kverify.exe || true
+        shell: bash
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: kverify-${{ fromJson(matrix.target).goos }}-${{ fromJson(matrix.target).goarch }}-${{ github.sha }}
+          path: out
