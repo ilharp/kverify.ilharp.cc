@@ -268,8 +268,86 @@
       </div>
     </div>
 
-    <script type="module">
-      import notiflix from "https://cdn.jsdelivr.net/npm/notiflix@3.2.6/+esm";
+    <script>
+      const notify = (html) => {
+        const notification = document.createElement("div");
+        notification.classList.add("material-notification");
+        const id = document.querySelectorAll(".material-notification").length;
+        notification.innerHTML = html;
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          notification.classList.add("hide");
+          setTimeout(() => notification.remove(), 400);
+        }, 10000);
+        if (!document.querySelector("#md-n-style")) {
+          const style = `
+    .material-notification {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      bottom: 16px;
+      left: 16px;
+      max-width: 400px;
+      padding: 10px 16px;
+      background-color: #323232;
+      color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      animation: slide-up 0.5s ease-in-out;
+      transition: top 0.3s;
+      z-index: 10000;
+    }
+    
+    .material-notification.hide {
+      animation: slide-down 0.5s ease-in-out;
+      animation-fill-mode: forwards;
+    }
+    
+    .material-notification h3 {
+      margin: 0;
+    }
+    
+    .material-notification p {
+      margin: 0;
+      font-size: 14px;
+    }
+      
+    @keyframes slide-up {
+      from {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+      
+    @keyframes slide-down {
+      from {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+    }
+    `;
+
+          const head =
+            document.head || document.getElementsByTagName("head")[0];
+          const styleElem = document.createElement("style");
+          styleElem.type = "text/css";
+          styleElem.id = "md-n-style";
+          styleElem.appendChild(document.createTextNode(style));
+          head.appendChild(styleElem);
+        }
+      };
 
       function addRipple(e, target, invert) {
         if (getComputedStyle(target).position !== "absolute") {
@@ -388,7 +466,7 @@
         } catch (e) {
           $(".form").style.opacity = 1;
           $(".form").style.pointerEvents = "";
-          notiflix.Notify.failure(e.toString());
+          notify(e.toString());
         }
       };
     </script>
