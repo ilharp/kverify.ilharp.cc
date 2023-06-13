@@ -117,9 +117,9 @@
         font-size: 14px;
         opacity: 0.8;
       }
-      
+
       button:hover {
-          background: #104b79;
+        background: #104b79;
       }
 
       .input-container {
@@ -366,8 +366,11 @@
         }
       };
 
-      $(".submit").onclick = async (e) => {
+      $(".submit").onpointerdown = (e) => {
         addRipple(e, $(".submit"), false);
+      };
+
+      $(".submit").onclick = async (e) => {
         $(".form").style.opacity = 0.6;
         $(".form").style.pointerEvents = "none";
 
@@ -378,9 +381,7 @@
           };
 
           document.startViewTransition(() => {
-            document.querySelector(
-              ".input-container"
-            ).innerHTML = `
+            document.querySelector(".input-container").innerHTML = `
                       <div class="title">验证成功</div>
                       <div class="subtitle">${res}</div>`;
           });
