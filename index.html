@@ -1,77 +1,235 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>参与讨论</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <style type="text/css">
+      @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
-<head>
-  <title>参与讨论</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  <style type="text/css">
-    * {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-        Ubuntu, Cantarell, 'Open Sans', 'Noto Sans', 'Helvetica Neue', Helvetica,
-        sans-serif;
-      font-weight: 400;
+      html {
+        background: #1f1f1f;
+        color: white;
+      }
+      * {
+        font-family: "Noto Sans SC", -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+          "Noto Sans", "Helvetica Neue", Helvetica, sans-serif;
+        font-weight: 400;
 
-      font-style: normal;
-      font-variant-ligatures: normal;
-      font-variant-caps: normal;
-      font-variant-numeric: normal;
-      font-variant-east-asian: normal;
-      font-stretch: normal;
-      text-rendering: optimizeLegibility;
-      text-indent: 0;
-      text-shadow: none;
-      text-decoration: none;
-      writing-mode: horizontal-tb;
-      letter-spacing: normal;
-      word-spacing: normal;
+        font-style: normal;
+        font-variant-ligatures: normal;
+        font-variant-caps: normal;
+        font-variant-numeric: normal;
+        font-variant-east-asian: normal;
+        font-stretch: normal;
+        text-rendering: optimizeLegibility;
+        text-indent: 0;
+        text-shadow: none;
+        text-decoration: none;
+        writing-mode: horizontal-tb;
+        letter-spacing: normal;
+        word-spacing: normal;
 
-      position: relative;
-      margin: 0;
-      padding: 0;
+        position: relative;
+        margin: 0;
+        padding: 0;
 
-      box-sizing: border-box;
-      border: none;
+        box-sizing: border-box;
+        border: none;
 
-      background-color: transparent;
-    }
+        background-color: transparent;
+      }
 
-    body {
-      margin: 24px;
-    }
+      body {
+        margin: 24px;
+      }
 
-    .se p {
-      margin: 12px 0;
-    }
+      .se p {
+        margin: 12px 0;
+      }
 
-    form > * {
-      border: 2px solid;
-    }
+      form > * {
+        border: 2px solid;
+      }
 
-    button {
-      background-color: #ccc;
-    }
-  </style>
-</head>
+      button {
+        background-color: #ccc;
+        padding: 10px;
+      }
 
-<body>
-  <section>
-    <h1>Koishi 用户交流群——参与讨论</h1>
-  </section>
+      .primary-container {
+        display: flex;
+        margin: 0;
+        padding: 56px;
+        border-radius: 24px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.6);
+      }
+      .primary-container .title {
+        font-weight: 700;
+        font-size: 35px;
+        margin-bottom: 10px;
+      }
 
-  <section class="se">
-    <p>注意：在群内讨论时请时刻遵守群规，如果有违反群规的行为将会被立即踢出本群哦~</p>
-    <p>如果你不小心违反了群规而被踢出本群，你可以重新申请加群~</p>
-    <br>
-    <p>了解了上述规则以后，在下方的输入框里输入你的 QQ 号：</p>
-  </section>
+      .primary-container::before {
+        border-radius: 24px;
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        z-index: -3;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        background-size: cover;
+        background-image: url(https://i.pixiv.re/img-master/img/2021/05/13/01/07/22/89798653_p0_master1200.jpg),
+          url(https://i.pixiv.re/c/540x540_70/img-master/img/2021/05/13/01/07/22/89798653_p0_master1200.jpg);
+      }
 
-  <section>
-    <form action="unban" method="post">
-      <input name="qq">
-      <button type="submit">提交</button>
-    </form>
-  </section>
-</body>
+      .desc {
+        text-align: center;
+      }
 
+      .primary-container .icon {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .primary-container .icon img {
+        width: 5em;
+        border-radius: 50%;
+        filter: drop-shadow(2px 4px 6px #00000055);
+      }
+
+      .primary-container .icon .icon-text {
+        font-size: 14px;
+        opacity: 0.8;
+      }
+
+      .input-container {
+        margin: auto;
+        max-width: 1200px;
+        padding: 24px;
+      }
+
+      .input-container .title {
+        font-size: 2.4em;
+        font-weight: 700;
+      }
+
+      .input-container .subtitle {
+        margin-top: 10px;
+        font-size: 1.5em;
+        opacity: 0.7;
+      }
+
+      .footer {
+        opacity: 0.6;
+        margin-top: 50px;
+      }
+
+      .footer .text {
+        font-weight: 100;
+        font-size: 15px;
+        margin-top: 10px;
+      }
+
+      form {
+        margin-top: 30px;
+      }
+      input {
+        border: none;
+        outline: none;
+        background: white;
+        padding: 0.9em 1.5em;
+        border-radius: 3em;
+        font-size: 1.2em;
+      }
+
+      button {
+        border-radius: 3em;
+        margin-left: 7px;
+        padding: 0.9em 2em;
+        background: #0d3b5e;
+        border: none;
+        font-weight: 600;
+        font-size: 1.2em;
+        outline: none;
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="primary-container">
+      <div class="icon">
+        <img src="https://p.qlogo.cn/gh/391463133/391463133/640/" alt="" />
+        <div class="icon-text">Koishi 用户群</div>
+      </div>
+      <div class="title">参与讨论</div>
+      <div class="desc">
+        <p>
+          在群内讨论时请时刻遵守群规，如果有违反群规的行为将会被立即踢出本群哦~
+        </p>
+        <p>如果你不小心违反了群规而被踢出本群，你可以重新申请加群~</p>
+        <br />
+      </div>
+    </div>
+
+    <div class="input-container">
+      <div class="title">立即开始</div>
+      <div class="subtitle">在下方的输入框里输入你的 QQ 号</div>
+      <form action="unban" method="post">
+        <input name="qq" />
+        <button type="submit">提交</button>
+      </form>
+    </div>
+
+    <div class="footer">
+      <svg
+        _ngcontent-oyv-c18=""
+        aria-hidden="true"
+        width="100%"
+        height="8"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <pattern
+          _ngcontent-oyv-c18=""
+          id="a"
+          width="91"
+          height="8"
+          patternUnits="userSpaceOnUse"
+        >
+          <g _ngcontent-oyv-c18="" clip-path="url(#clip0_2426_11367)">
+            <path
+              _ngcontent-oyv-c18=""
+              d="M114 4c-5.067 4.667-10.133 4.667-15.2 0S88.667-.667 83.6 4 73.467 8.667 68.4 4 58.267-.667 53.2 4 43.067 8.667 38 4 27.867-.667 22.8 4 12.667 8.667 7.6 4-2.533-.667-7.6 4s-10.133 4.667-15.2 0S-32.933-.667-38 4s-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0-10.133-4.667-15.2 0-10.133 4.667-15.2 0"
+              stroke="#E1E3E1"
+              stroke-linecap="square"
+            ></path>
+          </g>
+        </pattern>
+        <rect
+          _ngcontent-oyv-c18=""
+          width="100%"
+          height="100%"
+          fill="url(#a)"
+        ></rect>
+      </svg>
+      <div class="text">
+        <b>Koishi</b> 2023 <br />
+        Designed with <b>Material You</b>
+      </div>
+    </div>
+  </body>
 </html>
