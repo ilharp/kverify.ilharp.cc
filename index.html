@@ -380,9 +380,9 @@
           document.startViewTransition(() => {
             document.querySelector(
               ".input-container"
-            ).innerHTML = `<div class="input-container">
+            ).innerHTML = `
                       <div class="title">验证成功</div>
-                      <div class="subtitle">${res}</div> </div>`;
+                      <div class="subtitle">${res}</div>`;
           });
         } catch (e) {
           $(".form").style.opacity = 1;
