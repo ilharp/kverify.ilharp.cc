@@ -61,6 +61,7 @@
       button {
         background-color: #ccc;
         padding: 10px;
+        cursor: pointer;
       }
 
       .primary-container {
@@ -117,6 +118,10 @@
         opacity: 0.8;
       }
 
+      button:hover {
+        background: #104b79;
+      }
+
       .input-container {
         padding: 24px;
         margin: auto;
@@ -145,8 +150,9 @@
         margin-top: 10px;
       }
 
-      form {
+      div.form {
         margin-top: 30px;
+        transition: all 0.2s;
       }
       input {
         border: none;
@@ -162,6 +168,7 @@
         border-radius: 3em;
         padding: 0.9em 2em;
         background: #0d3b5e;
+        transition: all 0.3s;
         border: none;
         font-weight: 600;
         font-size: 1.2em;
@@ -185,6 +192,15 @@
           margin-top: 60px;
         }
       }
+      /*by @solstice23*/
+      .md-ripple {
+        border-radius: 50%;
+        position: absolute;
+        background-color: rgba(256, 256, 256, 0.07);
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        z-index: 999;
+      }
     </style>
   </head>
 
@@ -207,10 +223,10 @@
     <div class="input-container">
       <div class="title">立即开始</div>
       <div class="subtitle">在下方的输入框里输入你的 QQ 号</div>
-      <form action="unban" method="post">
+      <div class="form">
         <input name="qq" />
-        <button type="submit">提交</button>
-      </form>
+        <button class="submit">提交</button>
+      </div>
     </div>
 
     <div class="footer">
@@ -247,8 +263,212 @@
       </svg>
       <div class="text">
         <b>Koishi</b> 2023 <br />
-        Designed with <b>Material You</b>
+        Designed with <b>Material You</b><br />
+        <small>@ilharp&nbsp;&nbsp;|&nbsp;&nbsp;@MicroBlock</small>
       </div>
     </div>
+
+    <script>
+      const notify = (html) => {
+        const notification = document.createElement("div");
+        notification.classList.add("material-notification");
+        const id = document.querySelectorAll(".material-notification").length;
+        notification.innerHTML = html;
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          notification.classList.add("hide");
+          setTimeout(() => notification.remove(), 400);
+        }, 10000);
+        if (!document.querySelector("#md-n-style")) {
+          const style = `
+    .material-notification {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      bottom: 16px;
+      left: 16px;
+      max-width: 400px;
+      padding: 10px 16px;
+      background-color: #323232;
+      color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      animation: slide-up 0.5s ease-in-out;
+      transition: top 0.3s;
+      z-index: 10000;
+    }
+    
+    .material-notification.hide {
+      animation: slide-down 0.5s ease-in-out;
+      animation-fill-mode: forwards;
+    }
+    
+    .material-notification h3 {
+      margin: 0;
+    }
+    
+    .material-notification p {
+      margin: 0;
+      font-size: 14px;
+    }
+      
+    @keyframes slide-up {
+      from {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+      
+    @keyframes slide-down {
+      from {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+    }
+    `;
+
+          const head =
+            document.head || document.getElementsByTagName("head")[0];
+          const styleElem = document.createElement("style");
+          styleElem.type = "text/css";
+          styleElem.id = "md-n-style";
+          styleElem.appendChild(document.createTextNode(style));
+          head.appendChild(styleElem);
+        }
+      };
+
+      function addRipple(e, target, invert) {
+        if (getComputedStyle(target).position !== "absolute") {
+          target.style.position = "relative";
+        }
+        if (getComputedStyle(target).overflow !== "hidden") {
+          target.style.overflow = "hidden";
+        }
+        const ripple = document.createElement("span");
+        ripple.classList.add("md-ripple");
+
+        const rect = target.getBoundingClientRect();
+        const diagonal = Math.sqrt(rect.width ** 2 + rect.height ** 2);
+        const ox = e.clientX - rect.left;
+        const oy = e.clientY - rect.top;
+        const maxd = Math.ceil(
+          2 *
+            Math.sqrt(
+              Math.max(
+                ox ** 2 + oy ** 2,
+                (rect.width - ox) ** 2 + oy ** 2,
+                (rect.width - ox) ** 2 + (rect.height - oy) ** 2,
+                ox ** 2 + (rect.height - oy) ** 2
+              )
+            )
+        );
+        ripple.style.width = "0px";
+        ripple.style.height = "0px";
+        ripple.style.left = ox + "px";
+        ripple.style.top = oy + "px";
+        if (invert) {
+          ripple.style.filter = "invert(1)";
+        }
+        target.appendChild(ripple);
+
+        let d = 0;
+        let speed = 0.75 * (diagonal / 200); // 0.75px per 200px
+        let opacity = 1;
+        let status = "hold";
+
+        const onMouseUp = (e) => {
+          speed = 1.2 * (diagonal / 200);
+          status = "release";
+          document.removeEventListener("pointerup", onMouseUp);
+          document.removeEventListener("mouseout", onMouseUp);
+        };
+        document.addEventListener("pointerup", onMouseUp);
+        document.addEventListener("mouseout", onMouseUp);
+
+        let animation = null;
+
+        let lastTime = null;
+        const frame = (time) => {
+          const delta = time - (lastTime ?? time);
+          lastTime = time;
+          d += speed * delta;
+          ripple.style.width = d + "px";
+          ripple.style.height = d + "px";
+          if (
+            (status === "release" && d >= maxd * 0.7) ||
+            (status === "hold" && d >= maxd * 0.9)
+          ) {
+            opacity -= 0.005 * delta;
+            ripple.style.opacity = Math.max(opacity, 0);
+            if (opacity <= 0) {
+              cancelAnimationFrame(animation);
+              document.removeEventListener("pointerup", onMouseUp);
+              document.removeEventListener("mouseout", onMouseUp);
+              ripple.remove();
+              return;
+            }
+          }
+          animation = requestAnimationFrame(frame);
+        };
+        animation = requestAnimationFrame(frame);
+      }
+
+      const $ = document.querySelector.bind(document);
+
+      const submitUnban = async (qqid) => {
+        const res = await fetch("https://kverify.ilharp.cc/unban", {
+          body: "qq=" + qqid,
+          method: "POST",
+          headers: {
+            "content-type": "application/x-www-form-urlencoded"
+          }
+        }).then((r) => r.text());
+        const ele = document.createElement("div");
+        ele.innerHTML = res;
+        if (res.includes("成功")) {
+          return ele.innerText;
+        } else {
+          throw new Error(ele.innerText);
+        }
+      };
+
+      $(".submit").onpointerdown = (e) => {
+        addRipple(e, $(".submit"), false);
+      };
+
+      $(".submit").onclick = async (e) => {
+        $(".form").style.opacity = 0.6;
+        $(".form").style.pointerEvents = "none";
+
+        try {
+          const res = await submitUnban($("input").value);
+          document.startViewTransition ??= (cb) => {
+            cb();
+          };
+
+          document.startViewTransition(() => {
+            document.querySelector(".input-container").innerHTML = `
+                      <div class="title">验证成功</div>
+                      <div class="subtitle">${res}</div>`;
+          });
+        } catch (e) {
+          $(".form").style.opacity = 1;
+          $(".form").style.pointerEvents = "";
+          notify(e.toString());
+        }
+      };
+    </script>
   </body>
 </html>
