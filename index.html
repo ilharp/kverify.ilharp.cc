@@ -45,7 +45,9 @@
       }
 
       body {
-        margin: 24px;
+        margin: auto;
+        max-width: 1200px;
+        padding: 24px;
       }
 
       .se p {
@@ -116,9 +118,9 @@
       }
 
       .input-container {
-        margin: auto;
-        max-width: 1200px;
         padding: 24px;
+        margin: auto;
+        max-width: 900px;
       }
 
       .input-container .title {
@@ -134,7 +136,7 @@
 
       .footer {
         opacity: 0.6;
-        margin-top: 50px;
+        margin-top: 80px;
       }
 
       .footer .text {
@@ -153,11 +155,11 @@
         padding: 0.9em 1.5em;
         border-radius: 3em;
         font-size: 1.2em;
+        margin-right: 7px;
       }
 
       button {
         border-radius: 3em;
-        margin-left: 7px;
         padding: 0.9em 2em;
         background: #0d3b5e;
         border: none;
@@ -165,6 +167,17 @@
         font-size: 1.2em;
         outline: none;
         color: white;
+      }
+
+      @media screen and (max-width: 600px) {
+        input {
+          margin-right: 0;
+          width: 100%;
+        }
+        button {
+          width: 100%;
+          margin-top: 10px;
+        }
       }
     </style>
   </head>
