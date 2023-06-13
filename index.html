@@ -453,7 +453,7 @@
         $(".form").style.pointerEvents = "none";
 
         try {
-          const res = await submitUnban($("input").value);
+          const res = await submitUnban($(".input-container input").value);
           document.startViewTransition ??= (cb) => {
             cb();
           };
